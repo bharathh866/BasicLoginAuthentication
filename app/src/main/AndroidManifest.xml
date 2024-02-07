@@ -12,23 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyLogin"
         tools:targetApi="31">
-        <activity
-            android:name=".data.Resetpassword"
-            android:exported="false" />
-        <activity
-            android:name=".Forgetpass"
-            android:exported="false" />
-        <activity
-            android:name=".MyNavdrawer"
-            android:exported="false" />
-        <activity
-            android:name=".Signupactivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
-            android:exported="false"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.MyLogin" />
+
+
+
         <activity
             android:name=".MainActivity"
             android:exported="true">

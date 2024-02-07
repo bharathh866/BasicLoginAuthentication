@@ -67,6 +67,7 @@ dependencies {
 // Lifecycle components
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
 
+
 // Kotlin components
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.10")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
