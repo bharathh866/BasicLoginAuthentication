@@ -14,6 +14,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
 import com.example.mylogin.fragments.ContactUs
 import com.example.mylogin.fragments.Home
 import com.example.mylogin.fragments.Services
@@ -61,9 +62,10 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
             R.id.nav_services -> replaceFragment(Services())
             R.id.nav_contactus -> replaceFragment(ContactUs())
             R.id.nav_logout -> {
+                requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                 val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.fragment_container, LoginFragment())
-                fragmentTransaction.addToBackStack(null)
+                fragmentTransaction.replace(R.id.flfragment, LoginFragment())
+
                 fragmentTransaction.commit()
             }
         }

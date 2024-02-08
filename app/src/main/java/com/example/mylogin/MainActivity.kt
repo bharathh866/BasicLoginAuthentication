@@ -16,22 +16,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 val logofrga=LogoFragment()
         val login=LoginFragment()
-        val signup=SignupFragment()
+
+                Handler().postDelayed({
+            val loginFragment = LoginFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.flfragment,login)
+                .commit()
+        }, 3000)
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flfragment,login)
+            replace(R.id.flfragment,LogoFragment())
             commit()
         }
-//        Handler().postDelayed({
-//            val loginFragment = LoginFragment()
-//            supportFragmentManager.beginTransaction()
-//                .replace(R.id.flfragment, loginFragment)
-//                .commit()
-//        }, 3000)
-//            Handler().postDelayed({
-//                val intent = Intent(this, LoginFragment::class.java)
-//                startActivity(intent)
-//                finish()
-//            }, 5000)
+
 
         }
     }

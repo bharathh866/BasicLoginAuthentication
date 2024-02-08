@@ -65,7 +65,7 @@ class ResetpasswordFragment(private val mUserModel: UserViewModel): Fragment() {
         val checkuser = mUserModel.getUserbyUsername(username)
         if (checkuser != null) {
             updatePassword(username)
-            // Handle navigation or UI update after username check
+
         }
     }
 }

@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
         ft = view.findViewById(R.id.forgettext)
         ft.setOnClickListener {
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fragment_container,ResetpasswordFragment(mUserModel))
+            fragmentTransaction.replace(R.id.flfragment,ResetpasswordFragment(mUserModel))
             fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
         }
