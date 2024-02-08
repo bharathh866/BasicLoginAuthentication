@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.content.Context
 import android.os.Handler
 import com.example.mylogin.data.LogoFragment
 
@@ -14,7 +15,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-val logofrga=LogoFragment()
+        val isLoggedIn = isLoggedIn()
+
+        val logofrga=LogoFragment()
         val login=LoginFragment()
 
                 Handler().postDelayed({
@@ -30,6 +33,13 @@ val logofrga=LogoFragment()
 
 
         }
+    private fun isLoggedIn(): Boolean {
+        // Retrieve the login status from SharedPreferences
+        val sharedPreferences = getSharedPreferences("myAppPrefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getBoolean("isLoggedIn", false)
+    }
+
+
     }
 
 

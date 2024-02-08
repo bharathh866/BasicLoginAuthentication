@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.mylogin.LoginFragment
+import com.example.mylogin.MyNavdrawer
 import com.example.mylogin.R
 import com.example.mylogin.userViewmodel.UserViewModel
 import kotlinx.coroutines.Dispatchers
@@ -45,9 +47,15 @@ class ResetpasswordFragment(private val mUserModel: UserViewModel): Fragment() {
 
         resett.setOnClickListener {
             val username = entusername.text.toString()
+
             GlobalScope.launch(Dispatchers.Main) {
                 checkUsername(username)
+
             }
+            val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.flfragment, LoginFragment())
+
+            fragmentTransaction.commit()
         }
 
         return view

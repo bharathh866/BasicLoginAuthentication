@@ -47,35 +47,43 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
-        if (savedInstanceState == null) {
-            replaceFragment(Home())
-            navigationView.setCheckedItem(R.id.nav_home)
-        }
+//
+//        if (savedInstanceState == null) {
+//            replaceFragment(Home())
+//            navigationView.setCheckedItem(R.id.nav_home)
+//        }
 
         return view
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_home -> replaceFragment(Home())
-            R.id.nav_services -> replaceFragment(Services())
-            R.id.nav_contactus -> replaceFragment(ContactUs())
-            R.id.nav_logout -> {
-                requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-                fragmentTransaction.replace(R.id.flfragment, LoginFragment())
+        val fragmentManager = requireActivity().supportFragmentManager
+                // Handle fragment navigation here
 
+        when (item.itemId) {
+            R.id.nav_home -> replaceFragment(Home(),true)
+            R.id.nav_services -> replaceFragment(Services(),true)
+            R.id.nav_contactus -> replaceFragment(ContactUs(),true)
+            R.id.nav_logout -> {
+              //  fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                val fragmentTransaction =
+                    requireActivity().supportFragmentManager.beginTransaction()
+                fragmentTransaction.replace(R.id.flfragment, LoginFragment())
+                fragmentTransaction.addToBackStack(null)
                 fragmentTransaction.commit()
+
             }
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
 
-    private fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = false) {
         val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment)
+        if (addToBackStack) {
+            transaction.addToBackStack(null)
+        }
         transaction.commit()
     }
 

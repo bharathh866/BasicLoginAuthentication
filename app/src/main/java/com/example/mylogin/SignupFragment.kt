@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+
 import androidx.fragment.app.Fragment
 import com.example.mylogin.data.User
 import com.example.mylogin.userViewmodel.UserViewModel
@@ -51,26 +54,43 @@ class SignupFragment : Fragment() {
         if (inputcheck(firstName, lastName, email, password)) {
             val user = User(0, firstName, lastName, email, password)
             if (isPasswordValid(password)) {
+
                 mUserModel.addUser(user)
-                // Handle fragment navigation here
-                val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+
+                val fragmentTransaction =
+                    requireActivity().supportFragmentManager.beginTransaction()
                 fragmentTransaction.replace(R.id.flfragment, LoginFragment())
                 fragmentTransaction.addToBackStack(null)
                 fragmentTransaction.commit()
+
+
             } else {
-                Toast.makeText(requireContext(), "Password should contain at least one special character and have a maximum length of 8 characters", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Password should contain at least one special character and have a maximum length of 8 characters",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         } else {
             Toast.makeText(requireContext(), "Enter all the fields", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun inputcheck(firstName: String, lastName: String, email: String, password: String): Boolean {
-        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
+    private fun inputcheck(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String
+    ): Boolean {
+        return !(TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(
+            email
+        ) || TextUtils.isEmpty(password))
     }
 
     private fun isPasswordValid(password: String): Boolean {
         val pattern = Regex("^(?=.*[!@#\$%^&*()-+=])(?=\\S+$).{1,8}$")
         return pattern.matches(password)
+
     }
 }
+
