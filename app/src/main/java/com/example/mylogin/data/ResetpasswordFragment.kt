@@ -6,8 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.mylogin.LoginFragment
+
 import com.example.mylogin.MyNavdrawer
 import com.example.mylogin.R
 import com.example.mylogin.userViewmodel.UserViewModel
@@ -50,12 +53,18 @@ class ResetpasswordFragment(private val mUserModel: UserViewModel): Fragment() {
 
             GlobalScope.launch(Dispatchers.Main) {
                 checkUsername(username)
-
             }
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.flfragment, LoginFragment())
-
+            fragmentTransaction.addToBackStack(null)
             fragmentTransaction.commit()
+
+            // Remove the reset password fragment from the back stack
+            requireActivity().supportFragmentManager.popBackStack(
+                null,
+                FragmentManager.POP_BACK_STACK_INCLUSIVE
+            )
+
         }
 
         return view
@@ -75,5 +84,9 @@ class ResetpasswordFragment(private val mUserModel: UserViewModel): Fragment() {
             updatePassword(username)
 
         }
+        else {
+            Toast.makeText(context, "Username not found", Toast.LENGTH_SHORT).show()
+        }
+
     }
 }

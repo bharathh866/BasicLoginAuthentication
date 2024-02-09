@@ -1,5 +1,6 @@
 package com.example.mylogin
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
@@ -25,14 +26,11 @@ class LoginFragment : Fragment() {
     private lateinit var mainn: Button
     private lateinit var mUserModel: UserViewModel
 
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
         username = view.findViewById(R.id.loguser)
@@ -58,7 +56,7 @@ class LoginFragment : Fragment() {
         sigtext.setOnClickListener {
             val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.flfragment,SignupFragment())
-            fragmentTransaction.addToBackStack(null)
+
             fragmentTransaction.commit()
         }
 
@@ -83,7 +81,4 @@ class LoginFragment : Fragment() {
     private fun inputcheck(email: String, password: String): Boolean {
         return !(TextUtils.isEmpty(email) || TextUtils.isEmpty(password))
     }
-
 }
-
-
