@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.text.TextUtils.replace
 import androidx.datastore.preferences.preferencesDataStore
 
 import androidx.lifecycle.lifecycleScope
@@ -11,55 +12,58 @@ import com.example.mylogin.Repository.Userpreferencesrepository
 import com.example.mylogin.data.LogoFragment
 
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 class MainActivity : AppCompatActivity() {
-    private lateinit var userPreferencerepo:Userpreferencesrepository
-    private lateinit var userPreferencesJob: Job
+  lateinit var userPreferencerepo: Userpreferencesrepository
+
     private val Context.dataStore by preferencesDataStore(
         name = "user"
     )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
-        val logofrga=LogoFragment()
-        val login=LoginFragment()
+        val logofrga = LogoFragment()
+        val login = LoginFragment()
         userPreferencerepo = Userpreferencesrepository(dataStore)
+        showLogoFragment()
 
-        userPreferencesJob = lifecycleScope.launch {
-            userPreferencerepo.userPreferencesFlow.collect { showCompleted->
-                if (showCompleted) {
-                    Handler().postDelayed({
 
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.flfragment,LogoFragment())
-                            .commit()
-                    }, 3000)
-                    navigateToLoggedOutState()
+        observeUserLoginState()
+    }
+    private fun showLogoFragment() {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.flfragment, LogoFragment())
+            .commit()
+
+        // Delay for 3 seconds and then replace with appropriate fragment
+        lifecycleScope.launch {
+            delay(3000)
+            LogoFragment()
+        }
+    }
+    fun observeUserLoginState() {
+        lifecycleScope.launch {
+            userPreferencerepo.userLoggedInStateFlow.collect { isLoggedIn ->
+                if (isLoggedIn) {
+
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.flfragment, MyNavdrawer())
+                        .commit()
                 } else {
-                    navigateToLoggedInState()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.flfragment, LoginFragment())
+                        .commit()
                 }
             }
         }
-
-
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flfragment,LogoFragment())
-            commit()
-        }
-
-
-    }
-
-    private fun navigateToLoggedInState() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.flfragment,MyNavdrawer())
-            .commit()
     }
 
     private fun navigateToLoggedOutState() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.flfragment,LoginFragment())
+            .replace(R.id.flfragment, LoginFragment())
             .commit()
     }
 

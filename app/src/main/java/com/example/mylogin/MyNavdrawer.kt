@@ -16,12 +16,17 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.lifecycleScope
+import com.example.mylogin.Repository.Userpreferencesrepository
 import com.example.mylogin.fragments.ContactUs
 import com.example.mylogin.fragments.Home
 import com.example.mylogin.fragments.Services
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var userpreferencesrepository: Userpreferencesrepository
 
     private lateinit var drawerLayout: DrawerLayout
 
@@ -38,7 +43,7 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
 
         val navigationView = view.findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
-
+        userpreferencesrepository = (requireActivity() as MainActivity).userPreferencerepo
         val toggle = ActionBarDrawerToggle(
             requireActivity(),
             drawerLayout,
@@ -48,25 +53,20 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-//
-//        if (savedInstanceState == null) {
-//            replaceFragment(Home())
-//            navigationView.setCheckedItem(R.id.nav_home)
-//        }
+
 
         return view
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val fragmentManager = requireActivity().supportFragmentManager
-                // Handle fragment navigation here
+
 
         when (item.itemId) {
-            R.id.nav_home -> replaceFragment(Home(),true)
-            R.id.nav_services -> replaceFragment(Services(),true)
-            R.id.nav_contactus -> replaceFragment(ContactUs(),true)
+            R.id.nav_home -> replaceFragment(Home(), true)
+            R.id.nav_services -> replaceFragment(Services(), true)
+            R.id.nav_contactus -> replaceFragment(ContactUs(), true)
             R.id.nav_logout -> {
-              //  fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                logoutUser()
                 val fragmentTransaction =
                     requireActivity().supportFragmentManager.beginTransaction()
                 fragmentTransaction.replace(R.id.flfragment, LoginFragment())
@@ -80,7 +80,8 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
     }
 
     private fun replaceFragment(fragment: Fragment, addToBackStack: Boolean = false) {
-        val transaction: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        val transaction: FragmentTransaction =
+            requireActivity().supportFragmentManager.beginTransaction()
         transaction.replace(R.id.fragment_container, fragment)
         if (addToBackStack) {
             transaction.addToBackStack(null)
@@ -88,12 +89,16 @@ class MyNavdrawer : Fragment(), NavigationView.OnNavigationItemSelectedListener 
         transaction.commit()
     }
 
-//fun onBackPressed() {
-//        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//            drawerLayout.closeDrawer(GravityCompat.START)
-//        } else {
-//
-//        }
+    fun logoutUser() {
+        // Your logout logic
+
+        // Upon logout, call logoutUser function
+        lifecycleScope.launch(Dispatchers.IO) {
+            userpreferencesrepository.logoutUser()
+        }
+
+
     }
+}
 
 
